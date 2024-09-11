@@ -30,7 +30,7 @@
 - SCSS для стилей
 
 Макет:
-[Figma](https://clck.ru/3CfJAY)
+[Figma](https://www.figma.com/design/Pt0Ki5QgCXOcT2qfdqVyx0/Untitled-(Copy)?node-id=2-12433&node-type=canvas&t=fwmH1cWHCbiOtWpQ-0)
 1. Главная страница (pages/index.tsx):
    - Поле для ввода имени.
    - Кнопка для сохранения имени. При нажатии:
