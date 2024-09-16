@@ -1,34 +1,5 @@
 ### Техническое задание
 
-#### 1. Создание проекта
-- Ознакомление с документацией Next.js: Next.js Documentation (https://nextjs.org/docs)
-- Создание проекта:
-  
-  npx create-next-app@12 <название_проекта> --typescript
-  
-- Архитектуру проекта создать на ваше усмотрение. Например:
-  
-  /src
-    /components
-      Header.tsx
-      PasswordGenerator.tsx
-      Calculator.tsx
-    /store
-      useStore.ts
-    /pages
-      index.tsx
-      password-generator.tsx
-      calculator.tsx
-    /styles
-      globals.scss
-  
-
-#### 2. Создание мини-приложения
-Используемые технологии:
-- React hooks: useState, useEffect, useMemo
-- Zustand для глобального состояния
-- SCSS для стилей
-
 Макет:
 [Figma](https://www.figma.com/design/Pt0Ki5QgCXOcT2qfdqVyx0/Untitled-(Copy)?node-id=2-12433&node-type=canvas&t=fwmH1cWHCbiOtWpQ-0)
 1. Главная страница (pages/index.tsx):
