@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import Popup from '@/components/Popup';
 import styles from '@/styles/PasswordGenerator.module.scss';
 
 const PasswordGenerator: React.FC = () => {
+
     const [passwords, setPasswords] = useState<string[]>([]);
     const [length, setLength] = useState(12);
-
+    const [showPopup, setShowPopup] = useState(false);
     const [includeUppercase, setIncludeUppercase] = useState(true);
     const [includeLowercase, setIncludeLowercase] = useState(true);
     const [includeNumbers, setIncludeNumbers] = useState(false);
     const [includeSymbols, setIncludeSymbols] = useState(false);
     const [noRepeat, setNoRepeat] = useState(false);
+
+    const handleClosePopup = () => {
+        setShowPopup(false);
+    };
 
     const generatePassword = () => {
         let chars = '';
@@ -60,6 +66,8 @@ const PasswordGenerator: React.FC = () => {
 
     return (
         <div className={styles.container}>
+
+            {showPopup && <Popup onClose={handleClosePopup} />}
 
             <div className={styles.generator}>
                 <h1>Генератор паролей</h1>

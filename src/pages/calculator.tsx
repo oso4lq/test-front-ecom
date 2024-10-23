@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import useStore from '@/store/useStore';
+import Popup from '@/components/Popup';
 import styles from '@/styles/Calculator.module.scss';
 
 const Calculator: React.FC = () => {
 
+    const [showPopup, setShowPopup] = useState(false);
     const [input, setInput] = useState('');
     const [result, setResult] = useState('');
     const [lastOperator, setLastOperator] = useState('');
     const [lastOperand, setLastOperand] = useState('');
     const [justCalculated, setJustCalculated] = useState(false);
+
+    const handleClosePopup = () => {
+        setShowPopup(false);
+    };
 
     // Format numbers with "," and "."
     const formatNumber = (num: string) => {
@@ -27,7 +34,7 @@ const Calculator: React.FC = () => {
             value: 'SIGNUM',
             label: (
                 <svg>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.3321 2.55469L19.8867 1.72264L18.2226 0.613235L17.6679 1.44529L5.66795 19.4453L5.11325 20.2773L6.77735 21.3867L7.33205 20.5547L19.3321 2.55469ZM5.5 0.999985V1.99998V3.99998H7.5H8.5V5.99998H7.5H5.5V7.99998V8.99998H3.5V7.99998V5.99998H1.5H0.5V3.99998H1.5H3.5V1.99998V0.999985H5.5ZM17.5 16H16.5V18H17.5H23.5H24.5V16H23.5H17.5Z" fill="black" />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M19.3321 2.55469L19.8867 1.72264L18.2226 0.613235L17.6679 1.44529L5.66795 19.4453L5.11325 20.2773L6.77735 21.3867L7.33205 20.5547L19.3321 2.55469ZM5.5 0.999985V1.99998V3.99998H7.5H8.5V5.99998H7.5H5.5V7.99998V8.99998H3.5V7.99998V5.99998H1.5H0.5V3.99998H1.5H3.5V1.99998V0.999985H5.5ZM17.5 16H16.5V18H17.5H23.5H24.5V16H23.5H17.5Z" fill="black" />
                 </svg>
             ),
             className: 'gray',
@@ -52,7 +59,7 @@ const Calculator: React.FC = () => {
             value: 'BACKSPACE',
             label: (
                 <svg>
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.58582 1.52588e-05H10H26H27V1.00002V17V18H26H10H9.58582L9.29292 17.7071L1.29292 9.70712L0.585815 9.00002L1.29292 8.29291L9.29292 0.292908L9.58582 1.52588e-05ZM10.4142 2.00002L3.41424 9.00002L10.4142 16H25V2.00002H10.4142ZM14 4.58579L14.7071 5.2929L17 7.5858L19.2929 5.29291L20 4.5858L21.4142 6.00002L20.7071 6.70712L18.4142 9.00001L20.7071 11.2929L21.4142 12L20 13.4142L19.2929 12.7071L17 10.4142L14.7071 12.7071L14 13.4142L12.5858 12L13.2929 11.2929L15.5858 9.00001L13.2929 6.70711L12.5858 6.00001L14 4.58579Z" fill="black" />
+                    <path fillRule="evenodd" clipRule="evenodd" d="M9.58582 1.52588e-05H10H26H27V1.00002V17V18H26H10H9.58582L9.29292 17.7071L1.29292 9.70712L0.585815 9.00002L1.29292 8.29291L9.29292 0.292908L9.58582 1.52588e-05ZM10.4142 2.00002L3.41424 9.00002L10.4142 16H25V2.00002H10.4142ZM14 4.58579L14.7071 5.2929L17 7.5858L19.2929 5.29291L20 4.5858L21.4142 6.00002L20.7071 6.70712L18.4142 9.00001L20.7071 11.2929L21.4142 12L20 13.4142L19.2929 12.7071L17 10.4142L14.7071 12.7071L14 13.4142L12.5858 12L13.2929 11.2929L15.5858 9.00001L13.2929 6.70711L12.5858 6.00001L14 4.58579Z" fill="black" />
                 </svg>
             ),
             className: 'white',
@@ -295,6 +302,9 @@ const Calculator: React.FC = () => {
 
     return (
         <div className={styles.container}>
+
+            {showPopup && <Popup onClose={handleClosePopup} />}
+
             <input
                 className={styles.input}
                 type="text"
