@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import useStore from '@/store/useStore';
 import Popup from '@/components/Popup';
 import styles from '@/styles/Calculator.module.scss';
 

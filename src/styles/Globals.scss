@@ -3,9 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Forum&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
+  font-family: "Inter", sans-serif;
   margin: 0;
   padding: 0;
-  font-family: "Inter", sans-serif;
 }
 
 a {
@@ -14,21 +14,18 @@ a {
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 button {
-  width: 180px;
-  height: 44px;
-  padding: 14px 20px;
   background-color: #3B75A2;
-  color: #F5F5F5;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-family: 'Roboto', sans-serif;
+  text-align: center;
 
   &:hover {
     background-color: #226496;
@@ -37,7 +34,7 @@ button {
 
 .gray {
   background-color: #D2D3DA;
-  color: #000000;
+  color: #000000 !important;
 
   &:hover {
     background-color: #A8ABBB;
@@ -46,7 +43,7 @@ button {
 
 .white {
   background-color: #FFFFFF;
-  color: #000000;
+  color: #000000 !important;
 
   &:hover {
     background-color: #D3D4DB;
