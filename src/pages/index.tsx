@@ -18,7 +18,8 @@ const Home: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.close}>
                 <svg>
-                    <use xlinkHref="/sprite.svg#icon-close"></use>
+                    {/* <use xlinkHref="/sprite.svg#icon-close"></use> */}
+                    <path d="M5.58716 3.88906L9.47622 0L10.5872 1.11094L6.69809 5L10.5872 8.88906L9.47622 10L5.58716 6.11094L1.69809 10L0.587158 8.88906L4.47622 5L0.587158 1.11094L1.69809 0L5.58716 3.88906Z" fill="#4F4F4F" />
                 </svg>
             </div>
 

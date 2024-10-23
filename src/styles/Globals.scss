@@ -12,22 +12,40 @@ a {
 }
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 button {
-  width: Fixed (180px)px;
-  height: Fixed (44px)px;
-  padding: 14px 20px 14px 20px;
-  opacity: 0px;
-
+  width: 180px;
+  height: 44px;
+  padding: 14px 20px;
   background-color: #3B75A2;
-  color: #fff;
+  color: #F5F5F5;
   border: none;
   border-radius: 8px;
   cursor: pointer;
 
   &:hover {
     background-color: #226496;
+  }
+}
+
+.gray {
+  background-color: #D2D3DA;
+  color: #000000;
+
+  &:hover {
+    background-color: #A8ABBB;
+  }
+}
+
+.white {
+  background-color: #FFFFFF;
+  color: #000000;
+
+  &:hover {
+    background-color: #D3D4DB;
   }
 }

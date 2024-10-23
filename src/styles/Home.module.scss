@@ -20,14 +20,23 @@
 
 .close {
     position: absolute;
-    right: 36px;
-    top: 36px;
+    right: 10px;
+    top: 10px;
     width: 24px;
     height: 24px;
     font-size: 10px;
     background-color: #E5E5E5;
     color: #4F4F4F;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    svg {
+        width: 11px;
+        height: 11px;
+    }
 }
 
 .form {
@@ -39,8 +48,8 @@
         font-weight: 600;
         line-height: 24.2px;
         text-align: left;
-
         color: #54595E;
+        margin-bottom: 16px;
     }
 
     p {
@@ -49,30 +58,22 @@
         font-weight: 500;
         line-height: 24px;
         text-align: left;
-
         color: #4F4F4F;
+        margin-bottom: 4px;
     }
 
     input {
+        color: #ACACAC;
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #D1D1D1;
+        border-radius: 8px;
+
         font-family: Inter;
         font-size: 14px;
         font-weight: 500;
         line-height: 16.94px;
         text-align: left;
-        color: #ACACAC;
-
-
-        width: 100%;
-        padding: 14px 16px 14px 16px;
-        gap: 10px;
-        border-radius: 8px 0px 0px 0px;
-        border: 1px 0px 0px 0px;
-        opacity: 0px;
-
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: 1px solid #D1D1D1;
-        border-radius: 8px;
     }
 }
 

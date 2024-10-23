@@ -61,12 +61,12 @@ const PasswordGenerator: React.FC = () => {
     return (
         <div className={styles.container}>
 
-            <div className={styles.settings}>
+            <div className={styles.generator}>
                 <h1>Генератор паролей</h1>
 
-                <div className={styles.form}>
+                <div className={styles.settings}>
                     <label className={styles.length}>
-                        Длина пароля:
+                        <span>Длина пароля:</span>
                         <input
                             type="number"
                             value={length}
@@ -82,7 +82,7 @@ const PasswordGenerator: React.FC = () => {
                             checked={includeUppercase}
                             onChange={(e) => setIncludeUppercase(e.target.checked)}
                         />
-                        Использовать прописные буквы
+                        <span>Использовать прописные буквы</span>
                     </label>
 
                     <label>
@@ -91,7 +91,7 @@ const PasswordGenerator: React.FC = () => {
                             checked={includeLowercase}
                             onChange={(e) => setIncludeLowercase(e.target.checked)}
                         />
-                        Использовать строчные буквы
+                        <span>Использовать строчные буквы</span>
                     </label>
 
                     <label>
@@ -100,7 +100,7 @@ const PasswordGenerator: React.FC = () => {
                             checked={includeNumbers}
                             onChange={(e) => setIncludeNumbers(e.target.checked)}
                         />
-                        Использовать цифры
+                        <span>Использовать цифры</span>
                     </label>
 
                     <label>
@@ -109,7 +109,7 @@ const PasswordGenerator: React.FC = () => {
                             checked={includeSymbols}
                             onChange={(e) => setIncludeSymbols(e.target.checked)}
                         />
-                        Использовать символы: %, *, ), ?, @, #, $, ~
+                        <span>Использовать символы: %, *, ), ?, @, #, $, ~</span>
                     </label>
 
                     <label>
@@ -118,22 +118,21 @@ const PasswordGenerator: React.FC = () => {
                             checked={noRepeat}
                             onChange={(e) => setNoRepeat(e.target.checked)}
                         />
-                        Избегать повторения символов
+                        <span>Избегать повторения символов</span>
                     </label>
-
-                    <button onClick={generatePassword}>Сгенерировать пароль</button>
                 </div>
+
+                <button className={styles.btn} onClick={generatePassword}>Сгенерировать пароль</button>
             </div>
 
             <div className={styles.result}>
-                <h2>Пароли:</h2>
                 <ul>
-                    {passwords.map((pwd, index) => (
+                    {passwords.map((password, index) => (
                         <li key={index}>
-                            <span>{pwd}</span>
-                            <button onClick={() => copyToClipboard(pwd)}>
+                            <span>{password}</span>
+                            <button onClick={() => copyToClipboard(password)}>
                                 <svg>
-                                    <use xlinkHref="/sprite.svg#icon-copy"></use>
+                                    <path d="M21.9219 0.390015C23.1406 0.390015 24.1719 1.42126 24.1719 2.64001V16.14C24.1719 17.4056 23.1406 18.39 21.9219 18.39H8.42188C7.15625 18.39 6.17188 17.4056 6.17188 16.14V2.64001C6.17188 1.42126 7.15625 0.390015 8.42188 0.390015H21.9219ZM8.42188 19.89H18.1719V22.14C18.1719 23.4056 17.1406 24.39 15.9219 24.39H2.42188C1.15625 24.39 0.171875 23.4056 0.171875 22.14V8.64001C0.171875 7.42126 1.15625 6.39001 2.42188 6.39001H4.67188V16.14C4.67188 18.2494 6.3125 19.89 8.42188 19.89Z" fill="#3B75A2" />
                                 </svg>
                             </button>
                         </li>
