@@ -5,6 +5,9 @@ const Calculator: React.FC = () => {
 
     const [input, setInput] = useState('');
     const [result, setResult] = useState('');
+    const [lastOperator, setLastOperator] = useState('');
+    const [lastOperand, setLastOperand] = useState('');
+    const [justCalculated, setJustCalculated] = useState(false);
 
     // Format numbers with "," and "."
     const formatNumber = (num: string) => {
@@ -70,19 +73,55 @@ const Calculator: React.FC = () => {
         }
 
         if (value === 'C') {
-            // Clear
+            // Clear input, result, and reset calculation state
             setInput('');
             setResult('');
+            setJustCalculated(false);
+            setLastOperator('');
+            setLastOperand('');
 
         } else if (value === 'SIGNUM') {
-            // Toggle +/- for the current input
-            if (input) {
-                if (input.charAt(0) === '-') {
-                    setInput(input.substring(1));
+            // Toggle +/- sign for the result or the last number in the input
+            if (justCalculated) {
+                // Case when there is a result of a previous calculation:
+                // Start new calculation with negate(result)
+                if (result === '0') {
+                    return; // Zero can't be negative
+                }
+
+                if (result.startsWith('-')) {
+                    setInput(result.substring(1));
                 } else {
-                    setInput('-' + input);
+                    setInput('-' + result);
+                }
+
+                setResult(Math.abs(parseFloat(result)).toString());
+                setJustCalculated(false);
+            } else {
+                // Case when there is no complete calculation:
+                // Apply negate(number) to the last number in the input
+                const lastNumberMatch = input.match(/(.*?)(-?\d*\.?\d+)(?!.*\d)/);
+                if (lastNumberMatch) {
+                    const beforeNumber = lastNumberMatch[1];
+                    let number = lastNumberMatch[2];
+
+                    if (number === '0') {
+                        return; // Zero can't be negative
+                    }
+
+                    // Toggle +/- for the last number in the input
+                    if (number.startsWith('-')) {
+                        number = number.substring(1);
+                    } else {
+                        number = '-' + number;
+                    }
+
+                    // Reconstruct the input with spaces
+                    const newInput = `${beforeNumber}${number}`;
+                    setInput(newInput);
                 }
             }
+            setJustCalculated(false);
 
         } else if (value === '%') {
             // Percentage
@@ -95,70 +134,149 @@ const Calculator: React.FC = () => {
                     setResult('Error');
                 }
             }
+            setJustCalculated(false);
 
         } else if (value === '.') {
             // Handle decimal point inputs
-            // Get the last number segment by splitting the input using operators
-            const lastNumber = input.split(/[\+\-\*\/]/).pop();
-
-            // Prevent adding more than one decimal dot to a number
-            if (lastNumber && lastNumber.includes('.')) {
-                return;
+            if (justCalculated) {
+                // Start new calculation after '='
+                setInput('.');
+                setResult('');
+                setJustCalculated(false);
             } else {
-                setInput((prev) => prev + '.');
+                const lastNumber = input.split(/[\+\-\*\/]/).pop();
+                if (lastNumber && lastNumber.includes('.')) {
+                    return; // Ignore additional dots in the same number
+                } else {
+                    setInput((prev) => prev + '.');
+                }
             }
 
         } else if (value === 'BACKSPACE') {
             // Remove the last character
             setInput(input.slice(0, -1));
+            setJustCalculated(false);
 
         } else if (operators.includes(actualValue)) {
-            // Handle different operator inputs
-            if (input === '') {
-                // If input is empty, start with '0' followed by the operator. [Example input: +5 -> 0+5]
+            // Handle operator inputs
+            if (justCalculated) {
+                // Start new operation with the result after '='. [Example input: 1+5=+2 -> 6+2]
+                setInput(result + actualValue);
+                setJustCalculated(false);
+            } else if (input === '') {
+                // If input is empty, fill it with '0' and append the operator. [Example input: +5 -> 0+5]
                 setInput('0' + actualValue);
             } else if (input.slice(-1) === '.') {
-                // If input ends with '.', append '0' before adding the operator. [Example input: .+5 -> 0.0+5]
+                // If input ends with '.', append '0' and the operator. [Example input: .+5 -> 0.0+5]
                 setInput(input + '0' + actualValue);
             } else if (operators.includes(input.slice(-1))) {
-                // Replace the last operator with the new one. [Example input: 1-*+5 -> 1+5]
+                // If input already has an operator, replace it with the new one. [Example input: 1-*+5 -> 1+5]
                 setInput(input.slice(0, -1) + actualValue);
             } else {
-                // Append operator to input (default). [Example input: 1+5 -> 1+5]
+                // Default: append operator to input. [Example input: 1+5 -> 1+5]
                 setInput(input + actualValue);
             }
 
         } else if (value === '=') {
-            // Calculate
+            // Handle calculation
             try {
-                // Here, the user input is sanitized and processed to work with tricky situations
-                const sanitizedInput = input.replace(/÷/g, '/').replace(/×/g, '*');
+                let tempInput;
 
+                if (justCalculated && lastOperator && lastOperand) {
+                    // Repeat last operation with result. [Example input: 2+3== -> 2+3+3=8]
+                    tempInput = result + lastOperator + lastOperand;
+                } else {
+                    // Remove trailing operator if present. [Example input: 2+5+= -> 2+5=7]
+                    tempInput = input;
+                    if (operators.includes(tempInput.slice(-1))) {
+                        tempInput = tempInput.slice(0, -1);
+                    }
+                }
+
+                const sanitizedInput = tempInput.replace(/÷/g, '/').replace(/×/g, '*');
                 // Replace any standalone '.' with '0' for evaluation
-                const evalInput = sanitizedInput.replace(/(^|[\+\-\*\/])\.(?=[\+\-\*\/]|$)/g, '$10');
-
-                // If input is empty, treat it as '0'
+                const evalInput = sanitizedInput.replace(
+                    /(^|[\+\-\*\/])\.(?=[\+\-\*\/]|$)/g,
+                    '$10'
+                );
                 const finalEvalInput = evalInput || '0';
-
                 const evalResult = eval(finalEvalInput);
                 setResult(formatNumber(evalResult.toString()));
+
+                // Append '=' to input to indicate calculation completion
+                setInput(tempInput + '=');
+
+                // Parse last operation for potential repeat
+                const lastOp = parseLastOperation(tempInput);
+                if (lastOp) {
+                    setLastOperator(lastOp.operator);
+                    setLastOperand(lastOp.operand);
+                } else {
+                    setLastOperator('');
+                    setLastOperand('');
+                }
+                setJustCalculated(true);
             } catch (error) {
                 setResult('Error');
             }
 
         } else {
             // Handle number inputs
-            setInput((prev) => prev + actualValue);
+            if (justCalculated) {
+                // Start new calculation after '='. [Example input: 2+3=1+ -> 1+]
+                setInput(actualValue);
+                setResult('');
+                setJustCalculated(false);
+            } else {
+                setInput((prev) => prev + actualValue);
+            }
         }
     };
 
+    // Parse the last operation from the input
+    const parseLastOperation = (expr: string) => {
+        const match = expr.match(/([\+\-\*\/])([^\+\-\*\/]+)$/);
+        if (match) {
+            return {
+                operator: match[1],
+                operand: match[2],
+            };
+        }
+        return null;
+    };
+
+    // Auto-calculate result as user types
+    useEffect(() => {
+        if (input === '' || input.endsWith('=')) {
+            // Do not evaluate if input is empty or ends with '='
+            return;
+        }
+        // Remove trailing operator for evaluation
+        let tempInput = input;
+        if (operators.includes(tempInput.slice(-1))) {
+            tempInput = tempInput.slice(0, -1);
+        }
+        try {
+            const sanitizedInput = tempInput.replace(/÷/g, '/').replace(/×/g, '*');
+            const evalInput = sanitizedInput.replace(/(^|[\+\-\*\/])\.(?=[\+\-\*\/]|$)/g, '$10');
+            const finalEvalInput = evalInput || '0';
+            const evalResult = eval(finalEvalInput);
+            setResult(formatNumber(evalResult.toString()));
+        } catch (error) {
+            setResult('');
+        }
+    }, [input]);
+
+    // Event listener to catch keyboard events
     const handleKeyPress = (e: KeyboardEvent) => {
         const allowedKeys = '0123456789+-*/().';
-        if (allowedKeys.includes(e.key) || e.key === 'Enter' || e.key === 'Backspace') {
+        if (allowedKeys.includes(e.key) || e.key === 'Enter' || e.key === 'Backspace' || e.key === 'Escape') {
             if (e.key === 'Enter') {
                 handleButtonClick('=');
             } else if (e.key === 'Backspace') {
                 handleButtonClick('BACKSPACE');
+            } else if (e.key === 'Escape') {
+                handleButtonClick('C');
             } else {
                 handleButtonClick(e.key);
             }
