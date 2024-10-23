@@ -1,3 +1,32 @@
+### Техническое задание
+
+Макет:
+[Figma](https://www.figma.com/design/Pt0Ki5QgCXOcT2qfdqVyx0/Untitled-(Copy)?node-id=2-12433&node-type=canvas&t=fwmH1cWHCbiOtWpQ-0)
+1. Главная страница (pages/index.tsx):
+   - Поле для ввода имени.
+   - Кнопка для сохранения имени. При нажатии:
+     - Сохранять имя в localStorage.
+     - Сохранять имя в глобальном состоянии (Zustand).
+   - Отображение имени в Header.
+
+2. Страница генерации пароля (pages/password-generator.tsx):
+   - Форма для генерации случайного пароля.
+   - Кнопка для генерации.
+   - Отображение сгенерированного пароля.
+
+3. Страница калькулятора (pages/calculator.tsx):
+   - Простой калькулятор с кнопками для операций.
+   - Отображение результатов.
+   - Ввод должен быть и с клавиатуры
+
+### Рекомендации
+- Начните с изучения основ каждой технологии (Next.js, Zustand, React hooks, SCSS).
+- Разработайте минимально жизнеспособный продукт (MVP) с основным функционалом.
+- Регулярно тестируйте приложение на каждом этапе разработки.
+- Использовать Next.js 14
+- Остальная архитектура на ваше усмотрение.
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
