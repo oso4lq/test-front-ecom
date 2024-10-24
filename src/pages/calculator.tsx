@@ -137,7 +137,7 @@ const Calculator: React.FC = () => {
                     const evalResult = eval(sanitizedInput);
                     setInput((evalResult / 100).toString());
                 } catch (error) {
-                    setResult('Error');
+                    setResult('Ошибка');
                 }
             }
             setJustCalculated(false);
@@ -223,7 +223,7 @@ const Calculator: React.FC = () => {
                 }
                 setJustCalculated(true);
             } catch (error) {
-                setResult('Error');
+                setResult('Ошибка');
             }
 
         } else {
